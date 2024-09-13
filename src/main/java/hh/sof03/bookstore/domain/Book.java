@@ -1,7 +1,16 @@
 package hh.sof03.bookstore.domain;
 
-public class Book {
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 
+@Entity
+public class Book {
+    
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private long id;
     private String title;
     private String author;
     private Integer publicationYear;
@@ -64,11 +73,22 @@ public class Book {
         this.price = price;
     }
 
+    
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+    
+
     @Override
     public String toString() {
         return "Book [title=" + title + ", author=" + author + ", publicationYear=" + publicationYear + ", isbn=" + isbn
                 + ", price=" + price + "]";
     }
+
 
     
 
