@@ -21,30 +21,34 @@ public class BookController {
     public String showBookstore() {
         return "index";
     }
-
+    // Kirjojen listaus
     @RequestMapping(value="/booklist", method=RequestMethod.GET)
     public String bookList(Model model) {
         
         model.addAttribute("books", repository.findAll());
         return "booklist";
     }  
+    // Kirjojen lisäys
     @RequestMapping(value="/add")
     public String addBook(Model model) {
         model.addAttribute("book", new Book());
         return "addbook";
     }
+    // Kirjojen muokkaaminen
     @RequestMapping(value = "/edit/{id}")
     public String editBook(@PathVariable("id") Long bookId, Model model) {
         Book book = repository.findById(bookId).orElse(null);
-        model.addAttribute("book", book);
+        model.addAttribute("book", book); // book tilalle repository.findById(bookId) 
         return "editbook";
     }
+    // Kirjojen lisäyksen tai muokkauksen tallennus 
+    // Tee oma save-metodi muokkaukselle!
     @RequestMapping(value="/save", method = RequestMethod.POST)
     public String saveBook(Book book) {
         repository.save(book);
         return "redirect:booklist";
     }
-
+    // Kirjojen poisto
     @RequestMapping(value="/delete/{id}", method = RequestMethod.GET)
     public String deleteBook(@PathVariable("id") Long bookId, Model model) {
         repository.deleteById(bookId);

@@ -7,6 +7,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import hh.sof03.bookstore.domain.Book;
 import hh.sof03.bookstore.domain.BookRepository;
+import hh.sof03.bookstore.domain.Category;
+import hh.sof03.bookstore.domain.CategoryRepository;
 
 @SpringBootApplication
 public class BookstoreApplication {
@@ -18,7 +20,7 @@ public class BookstoreApplication {
 	}
 
 	@Bean
-	public CommandLineRunner demo(BookRepository repository) {
+	public CommandLineRunner demo(BookRepository repository, CategoryRepository crepository) {
 		return (args) -> {
 			Book book1 = new Book("Tuntematon sotilas", "Väinö Linna", 2019, "9789510445785",  14.30f);
 			Book book2 = new Book("Täällä Pohjantähden alla 1-3", "Väinö Linna", 2018, "9789510435724",  22.70f);
@@ -28,8 +30,23 @@ public class BookstoreApplication {
 			repository.save(book2);
 			repository.save(book3);
 
-			log.info(book1.toString());
-			log.info(book3.toString());
+			Category category1 = new Category("classic");
+			crepository.save(category1);
+			Category category2 = new Category("scifi");
+			crepository.save(category2);
+			Category category3 = new Category("fantasy");
+			crepository.save(category3);
+
+			log.info("fetch all the categories");
+			for (Category category : crepository.findAll()) {
+				log.info(category.toString());
+			}
+			
+			log.info("fetch all the books");
+			for (Book book : repository.findAll()) {
+				log.info(book.toString());
+			}
+			
 			
 		};
 	} 
