@@ -1,4 +1,7 @@
 package hh.sof03.bookstore.web;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -7,6 +10,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import hh.sof03.bookstore.domain.Book;
 import hh.sof03.bookstore.domain.BookRepository;
+import hh.sof03.bookstore.domain.Category;
+import hh.sof03.bookstore.domain.CategoryRepository;
 
 
 
@@ -16,6 +21,8 @@ public class BookController {
 
     @Autowired
     private BookRepository repository;
+    @Autowired
+    private CategoryRepository crepository;
 
     @RequestMapping(value="/index", method=RequestMethod.GET)
     public String showBookstore() {
@@ -32,13 +39,27 @@ public class BookController {
     @RequestMapping(value="/add")
     public String addBook(Model model) {
         model.addAttribute("book", new Book());
+
+        List<Category> categories = new ArrayList<>();
+        for (Category category : crepository.findAll()) {
+            categories.add(category);
+        }
+        model.addAttribute("categories", categories);
+
         return "addbook";
     }
     // Kirjojen muokkaaminen
     @RequestMapping(value = "/edit/{id}")
     public String editBook(@PathVariable("id") Long bookId, Model model) {
         Book book = repository.findById(bookId).orElse(null);
-        model.addAttribute("book", book); // book tilalle repository.findById(bookId) 
+        model.addAttribute("book", book); // book tilalle repository.findById(bookId)
+
+        List<Category> categories = new ArrayList<>();
+        for (Category category : crepository.findAll()) {
+            categories.add(category);
+        }
+        model.addAttribute("categories", categories);
+
         return "editbook";
     }
     // Kirjojen lisäyksen tai muokkauksen tallennus 
