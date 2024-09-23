@@ -22,20 +22,23 @@ public class BookstoreApplication {
 	@Bean
 	public CommandLineRunner demo(BookRepository repository, CategoryRepository crepository) {
 		return (args) -> {
-			Book book1 = new Book("Tuntematon sotilas", "Väinö Linna", 2019, "9789510445785",  14.30f);
-			Book book2 = new Book("Täällä Pohjantähden alla 1-3", "Väinö Linna", 2018, "9789510435724",  22.70f);
-			Book book3 = new Book("Nummisuutarit", "Aleksis Kivi", 2011, "9789517461283",  7.30f);
-		
-			repository.save(book1);
-			repository.save(book2);
-			repository.save(book3);
-
 			Category category1 = new Category("classic");
 			crepository.save(category1);
 			Category category2 = new Category("scifi");
 			crepository.save(category2);
 			Category category3 = new Category("fantasy");
 			crepository.save(category3);
+
+			Book book1 = new Book("Tuntematon sotilas", "Väinö Linna", 2019, "9789510445785",  14.30f, category1);
+			Book book2 = new Book("Täällä Pohjantähden alla 1-3", "Väinö Linna", 2018, "9789510435724",  22.70f, category1);
+			Book book3 = new Book("The lord of the rings", "J.R.R. Tolkien", 2005, "9780618640157",  37.00f, category3);
+			Book book4 = new Book("The hitchhiker's guide to the galaxy", "Douglas Adams", 1995, "9780345391803",  12.80f, category2);
+			repository.save(book1);
+			repository.save(book2);
+			repository.save(book3);
+			repository.save(book4);
+
+			
 
 			log.info("fetch all the categories");
 			for (Category category : crepository.findAll()) {
