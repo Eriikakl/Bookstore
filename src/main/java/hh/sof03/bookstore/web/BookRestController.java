@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -19,7 +20,8 @@ public class BookRestController {
     @Autowired
     private BookRepository bookrepository; 
 
-    // haetaan kaikki kirjat
+    // haetaan kaikki kirjat 
+    // http://localhost:8080/api/books
     @RequestMapping(value = "/books", method = RequestMethod.GET)
     public @ResponseBody List<Book> getBookRest() {
         
@@ -27,10 +29,15 @@ public class BookRestController {
         return books;
     }
     // haetaan kirja id:n perusteella
+    // http://localhost:8080/api/books/{id}
     @RequestMapping(value = "/books/{id}", method = RequestMethod.GET)
     public @ResponseBody Optional<Book> getOneBookRest(@PathVariable(name="id") Long bookId) {
         return bookrepository.findById(bookId);
     }
-
+    // tallennetaan lisätty kirja
+    @RequestMapping(value = "/books", method = RequestMethod.POST)
+    public @ResponseBody Book saveNewBookRest(@RequestBody Book newBook) {
+        return bookrepository.save(newBook);
+    }
 
 }
