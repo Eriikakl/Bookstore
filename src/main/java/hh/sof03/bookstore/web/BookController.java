@@ -21,9 +21,9 @@ import hh.sof03.bookstore.domain.CategoryRepository;
 public class BookController {
 
     @Autowired
-    private BookRepository repository;
+    private BookRepository bookrepository;
     @Autowired
-    private CategoryRepository crepository;
+    private CategoryRepository categoryrepository;
 
     @RequestMapping(value="/login")
     public String login() {	
@@ -38,7 +38,7 @@ public class BookController {
     @RequestMapping(value="/booklist", method=RequestMethod.GET)
     public String bookList(Model model) {
         
-        model.addAttribute("books", repository.findAll());
+        model.addAttribute("books", bookrepository.findAll());
         return "booklist";
     }  
     // Kirjojen lisäys
@@ -47,7 +47,7 @@ public class BookController {
         model.addAttribute("book", new Book());
 
         List<Category> categories = new ArrayList<>();
-        for (Category category : crepository.findAll()) {
+        for (Category category : categoryrepository.findAll()) {
             categories.add(category);
         }
         model.addAttribute("categories", categories);
@@ -57,11 +57,11 @@ public class BookController {
     // Kirjojen muokkaaminen
     @RequestMapping(value = "/edit/{id}")
     public String editBook(@PathVariable("id") Long bookId, Model model) {
-        Book book = repository.findById(bookId).orElse(null);
+        Book book = bookrepository.findById(bookId).orElse(null);
         model.addAttribute("book", book); // book tilalle repository.findById(bookId)
 
         List<Category> categories = new ArrayList<>();
-        for (Category category : crepository.findAll()) {
+        for (Category category : categoryrepository.findAll()) {
             categories.add(category);
         }
         model.addAttribute("categories", categories);
@@ -72,14 +72,14 @@ public class BookController {
     // Tee oma save-metodi muokkaukselle!
     @RequestMapping(value="/save", method = RequestMethod.POST)
     public String saveBook(Book book) {
-        repository.save(book);
+        bookrepository.save(book);
         return "redirect:booklist";
     }
     // Kirjojen poisto
     @RequestMapping(value="/delete/{id}", method = RequestMethod.GET)
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public String deleteBook(@PathVariable("id") Long bookId, Model model) {
-        repository.deleteById(bookId);
+        bookrepository.deleteById(bookId);
         return "redirect:../booklist";
     }
     
