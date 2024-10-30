@@ -28,12 +28,14 @@ public class BookRestController {
         List<Book> books = (List<Book>) bookrepository.findAll();
         return books;
     }
+    
     // haetaan kirja id:n perusteella
     // http://localhost:8080/api/books/{id}
     @RequestMapping(value = "/books/{id}", method = RequestMethod.GET)
     public @ResponseBody Optional<Book> getOneBookRest(@PathVariable(name="id") Long bookId) {
         return bookrepository.findById(bookId);
     }
+
     // tallennetaan lisätty kirja
     @RequestMapping(value = "/books", method = RequestMethod.POST)
     public @ResponseBody Book saveNewBookRest(@RequestBody Book newBook) {
